@@ -1,28 +1,23 @@
 import prisma from "../database/dbConfig.js";
 
-class User {
-  static async create(userData) {
-    return prisma.user.create({
-      data: userData,
-    });
-  }
-  static async findByUserName(username) {
-    return prisma.user.findUnique({
-      where: { username },
+class Link {
+  static async create(linkData) {
+    return prisma.link.create({
+      data: linkData,
     });
   }
   static async findAll() {
-    return prisma.user.findMany({
-      select: { id: true, username: true, role: true },
+    return prisma.link.findMany({
+      select: { id: true, link: true },
       orderBy: [{ created_at: "asc" }],
     });
   }
-  static async update(id, userData) {
+  static async update(id, linkData) {
     try {
       //parseInt digunakan karena id yang dari url bertipe string
-      return await prisma.user.update({
+      return await prisma.link.update({
         where: { id: parseInt(id) },
-        data: userData,
+        data: { link: linkData },
       });
     } catch (error) {
       if (error.code === "P2025") {
@@ -34,7 +29,7 @@ class User {
   static async delete(id) {
     try {
       //harus menyertakan await agar error bisa di tangkap
-      return await prisma.user.delete({
+      return await prisma.link.delete({
         where: { id: parseInt(id) },
       });
     } catch (error) {
@@ -46,4 +41,4 @@ class User {
   }
 }
 
-export default User;
+export default Link;

@@ -48,7 +48,7 @@ export const login = async (req, res) => {
       { id: user.id, username: user.username, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
-    );  
+    );
     res.status(200).json({
       status: true,
       message: "Login Success",
@@ -62,5 +62,58 @@ export const login = async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getAllUser = async (req, res) => {
+  try {
+    const user = await User.findAll();
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error getting users: ", error);
+    res.status(500).json({ message: "Gagal Mengambil Users" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, password, role } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.update(id, {
+      username,
+      password: hash,
+      role,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User Tidak di temukan" });
+    }
+    res.status(200).json({
+      message: "User berhasil di perbarui",
+      data: {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating user: ", error);
+    res.status(500).json({ message: "Gagal Update user" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteuser = await User.delete(id);
+
+    if (!deleteuser) {
+      return res.status(404).json({ message: "User Tidak di temukan" });
+    }
+    res.status(200).json({ message: "User Berhasil di Hapus" });
+  } catch (error) {
+    console.error("Error deleting user: ", error);
+    res.status(500).json({ message: "User Gagal di Hapus" });
   }
 };

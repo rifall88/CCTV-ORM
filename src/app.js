@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoute.js";
 import cors from "cors";
-//import scheduleRoutes from "./routes/scheduleRoute.js";
+import linkRoutes from "./routes/linkRoute.js";
 
 dotenv.config();
 const app = express();
@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rute API
 app.use("/api/users", userRoutes);
-//app.use("/api/schedules", scheduleRoutes);
+app.use("/api/link", linkRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Daily Schedule API!");
