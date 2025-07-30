@@ -12,7 +12,7 @@ import { isAdmin } from "../middleware/isAdmin.js";
 const router = express.Router();
 
 router.post("/", authenticate, isAdmin, validateCreate, createLink);
-router.get("/", authenticate, isAdmin, getAllLink);
+router.get("/", authenticate, getAllLink);
 router.put("/:id", authenticate, isAdmin, validateUpdate, updateLink);
 router.delete("/:id", authenticate, isAdmin, deleteLink);
 

@@ -17,7 +17,7 @@ export const createLink = async (req, res) => {
   }
 };
 
-export const getAllLink = async (req, res) => {
+export const getAllLink = async (_req, res) => {
   try {
     const link = await Link.findAll();
     return res.status(200).json(link);

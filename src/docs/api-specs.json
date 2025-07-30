@@ -1,0 +1,231 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CCTV NOC API",
+    "version": "1.0.0",
+    "description": "Dokumentasi API untuk website CCTV NOC."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Operasi CRUD Untuk User."
+    },
+    {
+      "name": "Links",
+      "description": "Operasi CRUD Untuk Link."
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register user baru (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" },
+                  "role": { "type": "string", "enum": ["admin", "user"] }
+                },
+                "required": ["username", "password", "role"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User berhasil didaftarkan." },
+          "400": { "description": "Username sudah terdaftar." }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login berhasil, token dikembalikan." },
+          "401": { "description": "Username atau password salah." }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "List semua user." }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update user (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "role": { "type": "string", "enum": ["admin", "user"] }
+                },
+                "required": ["username", "role"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User berhasil diperbarui." },
+          "404": { "description": "User tidak ditemukan." }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "User berhasil dihapus." },
+          "404": { "description": "User tidak ditemukan." }
+        }
+      }
+    },
+    "/link": {
+      "get": {
+        "tags": ["Links"],
+        "summary": "Ambil semua link",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "List semua link." }
+        }
+      },
+      "post": {
+        "tags": ["Links"],
+        "summary": "Buat link baru (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "link": { "type": "string" }
+                },
+                "required": ["link"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Link berhasil dibuat." },
+          "400": { "description": "Link sudah ada." }
+        }
+      }
+    },
+    "/link/{id}": {
+      "put": {
+        "tags": ["Links"],
+        "summary": "Update link (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "link": { "type": "string" }
+                },
+                "required": ["link"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Link berhasil diupdate." },
+          "404": { "description": "Link tidak ditemukan." }
+        }
+      },
+      "delete": {
+        "tags": ["Links"],
+        "summary": "Delete link (admin only)",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Link berhasil dihapus." },
+          "404": { "description": "Link tidak ditemukan." }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
