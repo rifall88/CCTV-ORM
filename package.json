@@ -4,9 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/app.js",
-    "seed": "node prisma/createAdmin.js",
-    "postinstall": "npm run seed"
+    "start": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",

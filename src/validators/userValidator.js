@@ -19,7 +19,7 @@ export const validateRegister = (req, res, next) => {
 export const validateLogin = (req, res, next) => {
   const schema = Joi.object({
     username: Joi.string().required().min(3).max(50),
-    password: Joi.string().min(8).required().trim(),
+    password: Joi.string().min(8).required(),
   });
 
   const { error } = schema.validate(req.body, { abortEarly: false });
@@ -35,7 +35,7 @@ export const validateUpdate = (req, res, next) => {
   const schema = Joi.object({
     username: Joi.string().required().min(3).max(50),
     role: Joi.string().required().valid("admin", "user").default("user"),
-    password: Joi.string().min(8).required(),
+    password: Joi.string().min(8).required().trim(),
   });
 
   const { error } = schema.validate(req.body, { abortEarly: false });
